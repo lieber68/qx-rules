@@ -103,7 +103,7 @@ jobs:
           files: |
             ./publish/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
       - name: Git push assets to "release" branch
         run: |
@@ -114,5 +114,8 @@ jobs:
           git checkout -b release
           git add .
           git commit -m "${{ env.RELEASE_NAME }}"
-          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GIT_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
+
+      - name: Purge CDN Cache
+        run: curl -sSL  ${{ secrets.PURGE_URL }}
