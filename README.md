@@ -70,15 +70,15 @@
 [filter_remote]
 https://gitee.com/lieber68/selfUseRules/raw/master/lieber/X/direct.list, tag=Lieber, update-interval=43200, force-policy=direct, enabled=true
 https://gitee.com/lieber68/selfUseRules/raw/master/lieber/X/proxy.list, tag=Lieber, update-interval=43200, force-policy=𝐏𝐫𝐨𝐱𝐲, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/private.txt, tag=private, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/reject.txt, tag=reject, force-policy=reject, update-interval=43200, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/icloud.txt, tag=icloud, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/apple.txt, tag=apple, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/google.txt, tag=google, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/proxy.txt, tag=proxy, update-interval=43200, force-policy=𝐏𝐫𝐨𝐱𝐲, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/direct.txt, tag=direct, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/telegramcidr.txt, tag=telegramcidr, update-interval=43200, force-policy=direct, enabled=true
-https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/cncidr.txt, tag=cncidr, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/private.txt, tag=private, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/reject.txt, tag=reject, force-policy=reject, update-interval=43200, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/icloud.txt, tag=icloud, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/apple.txt, tag=apple, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/google.txt, tag=google, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/proxy.txt, tag=proxy, update-interval=43200, force-policy=𝐏𝐫𝐨𝐱𝐲, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/direct.txt, tag=direct, update-interval=43200, force-policy=direct, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/telegramcidr.txt, tag=telegramcidr, update-interval=43200, force-policy=𝐏𝐫𝐨𝐱𝐲, enabled=true
+https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/cncidr.txt, tag=cncidr, update-interval=43200, force-policy=direct, enabled=true
 
 [filter_local]
 ip-cidr, 10.0.0.0/8, direct
