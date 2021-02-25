@@ -16,7 +16,7 @@
 
 > 如果无法访问域名 `raw.githubusercontent.com`，可以使用第二个地址（`cdn.jsdelivr.net`），但是内容更新会有 12 小时的延迟。
 
-#### DOMAIN-SET:
+#### 规则文件链接:
 
 - **直连域名列表 direct.txt**：
   - [https://raw.githubusercontent.com/lieber68/qx-rules/release/direct.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/direct.txt)
@@ -54,45 +54,6 @@
 - **中国大陆 IPv4 地址列表 cncidr.txt**：
   - [https://raw.githubusercontent.com/lieber68/qx-rules/release/cncidr.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/cncidr.txt)
   - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/cncidr.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/cncidr.txt)
-
-#### RULE-SET:
-
-- **直连域名列表 direct.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/direct.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/direct.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/direct.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/direct.txt)
-- **代理域名列表 proxy.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/proxy.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/proxy.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/proxy.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/proxy.txt)
-- **广告域名列表 reject.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/reject.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/reject.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/reject.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/reject.txt)
-- **私有网络专用域名列表 private.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/private.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/private.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/private.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/private.txt)
-- **Apple 域名列表 apple.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/apple.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/apple.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/apple.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/apple.txt)
-- **iCloud 域名列表 icloud.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/icloud.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/icloud.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/icloud.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/icloud.txt)
-- **Google 域名列表 google.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/google.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/google.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/google.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/google.txt)
-- **GFWList 域名列表 gfw.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/gfw.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/gfw.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/gfw.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/gfw.txt)
-- **Greatfire 域名列表 greatfire.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/greatfire.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/greatfire.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/greatfire.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/greatfire.txt)
-- **非中国大陆使用的顶级域名列表 tld-not-cn.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/tld-not-cn.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/tld-not-cn.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/tld-not-cn.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/tld-not-cn.txt)
-- **Telegram 使用的 IP 地址列表 telegramcidr.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/telegramcidr.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/telegramcidr.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/telegramcidr.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/telegramcidr.txt)
-- **中国大陆 IPv4 地址列表 cncidr.txt**：
-  - [https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/cncidr.txt](https://raw.githubusercontent.com/lieber68/qx-rules/release/ruleset/cncidr.txt)
-  - [https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/cncidr.txt](https://cdn.jsdelivr.net/gh/lieber68/qx-rules@release/ruleset/cncidr.txt)
 
 ### 使用方式
 
