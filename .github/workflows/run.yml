@@ -68,15 +68,15 @@ jobs:
 
       - name: Generate gfw.txt file
         run: |
-          curl -sSL ${lieber_gfw} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, direct\n"' > gfw.txt
+          curl -sSL ${lieber_gfw} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy\n"' > gfw.txt
 
       - name: Generate greatfire.txt file
         run: |
-          curl -sSL ${lieber_greatfire} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, direct\n"' > greatfire.txt
+          curl -sSL ${lieber_greatfire} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy\n"' > greatfire.txt
 
       - name: Generate tld-not-cn.txt file
         run: |
-          curl -sSL ${custom_tld_not_cn} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, direct\n", $2}' > tld-not-cn.txt
+          curl -sSL ${custom_tld_not_cn} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, proxy\n", $2}' > tld-not-cn.txt
 
       - name: Generate cncidr.txt file
         run: |
