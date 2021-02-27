@@ -105,10 +105,11 @@ jobs:
           git rm -rf .
           ls -la $(pwd)
           cp -rf publish/. ./
+          rm -rf publish/
           ls -la $(pwd)
           git add .
           git status .
-          git commit -am "Updated at $(date)"
+          git commit -m "Updated at $(date)"
           git branch -D release
           git branch -m release
               
