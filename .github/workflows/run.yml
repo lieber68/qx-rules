@@ -1,4 +1,4 @@
-name: Generate routing rules for Surge
+name: Generate routing rules for Quantumult X
 on:
   workflow_dispatch:
   schedule:
@@ -95,6 +95,7 @@ jobs:
 
       - name: Push artifacts to release branch
         run: |
+          echo "$(pwd)"
           git config --local user.name "actions"
           git config --local user.email "action@github.com"
           git fetch
