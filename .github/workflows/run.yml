@@ -1,4 +1,4 @@
-name: Generate routing rules for Quantumult X
+name: Generate routing rules for Quntumult X
 on:
   workflow_dispatch:
   schedule:
@@ -93,32 +93,17 @@ jobs:
           mkdir -p publish
           install -p {apple,icloud,google,proxy,direct,reject,private,gfw,greatfire,tld-not-cn,cncidr,telegramcidr}.txt ./publish/
 
-      - name: Push artifacts to release branch
+      - name: Git push assets to "release" branch
         run: |
-          echo "$(pwd)"
-          ls -la $(pwd)
+          cd publish
+          git init
           git config --local user.name "actions"
           git config --local user.email "action@github.com"
-          git fetch
-          git checkout release
-          git checkout --orphan release-orphan
-          git rm -rf .
-          ls -la $(pwd)
-          cp -rf publish/. ./
-          rm -rf publish/
-          ls -la $(pwd)
+          git checkout -b release
           git add .
-          git status .
-          git commit -m "Updated at $(date)"
-          git branch -D release
-          git branch -m release
-              
-      - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GIT_TOKEN }}
-          branch: release
-          force: true
+          git commit -m "${{ env.RELEASE_NAME }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GIT_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f -u origin release
 
       - name: Purge CDN Cache
         run: curl -sSL  ${{ secrets.PURGE_URL }}
