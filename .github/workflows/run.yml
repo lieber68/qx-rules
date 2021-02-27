@@ -93,29 +93,26 @@ jobs:
           mkdir -p publish
           install -p {apple,icloud,google,proxy,direct,reject,private,gfw,greatfire,tld-not-cn,cncidr,telegramcidr}.txt ./publish/
 
-      - name: Release and upload assets
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ env.RELEASE_NAME }}
-          tag_name: ${{ env.TAG_NAME }}
-          draft: false
-          prerelease: false
-          files: |
-            ./publish/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-
-      - name: Git push assets to "release" branch
+      - name: Push artifacts to release branch
         run: |
-          cd publish
-          git init
           git config --local user.name "actions"
           git config --local user.email "action@github.com"
-          git checkout -b release
+          git fetch
+          git checkout release
+          git checkout --orphan release-orphan
+          git rm -rf .
+          cp -rf publish/. ./
           git add .
-          git commit -m "${{ env.RELEASE_NAME }}"
-          git remote add origin "https://${{ github.actor }}:${{ secrets.GIT_TOKEN }}@github.com/${{ github.repository }}"
-          git push -f -u origin release
+          git commit -am "Updated at $(date)"
+          git branch -D release
+          git branch -m release
+              
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GIT_TOKEN }}
+          branch: release
+          force: true
 
       - name: Purge CDN Cache
         run: curl -sSL  ${{ secrets.PURGE_URL }}
