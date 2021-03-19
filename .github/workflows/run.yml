@@ -23,6 +23,7 @@ jobs:
           echo "lieber_reject=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt" >> $GITHUB_ENV
           echo "lieber_proxy=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt" >> $GITHUB_ENV
           echo "lieber_direct=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt" >> $GITHUB_ENV
+          echo "ACL4SSR_ChinaDomain=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list" >> $GITHUB_ENV
           echo "lieber_gfw=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt" >> $GITHUB_ENV
           echo "lieber_greatfire=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/greatfire.txt" >> $GITHUB_ENV
           echo "felixonmars_apple=https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf" >> $GITHUB_ENV
@@ -57,8 +58,9 @@ jobs:
 
       - name: Generate direct.txt file
         run: |
-          curl -sSL ${lieber_direct} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(full:)([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, direct\n"' > direct.txt
-          curl -sSL ${lieber_direct} | grep -Ev "^(regexp|keyword|full):" | perl -ne '/^(domain:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, direct\n"' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' > direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> direct.txt
 
       - name: Generate proxy.txt file
         run: |
@@ -67,7 +69,7 @@ jobs:
 
       - name: Generate reject.txt file
         run: |
-          curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' > temp_reject.txt
           curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
           curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
           curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
