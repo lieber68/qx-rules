@@ -46,87 +46,90 @@ jobs:
       - name: Generate icloud.txt file
         run: |
           curl -sSL ${custom_icloud} | grep -E "^full:" | awk -F ':' '{printf "host, %s, direct\n", $2}' > icloud.txt
-          curl -sSL ${custom_icloud} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, direct", $2}' >> icloud.txt
+          curl -sSL ${custom_icloud} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, direct\n", $2}' >> icloud.txt
 
       - name: Generate google.txt file
         run: |
-          curl -sSL ${felixonmars_google} | perl -ne '/^server=\/([^\/]+)\// && print "host-suffix, $1, direct"' > google.txt
+          curl -sSL ${felixonmars_google} | perl -ne '/^server=\/([^\/]+)\// && print "host-suffix, $1, direct\n"' > google.txt
 
       - name: Generate apple.txt file
         run: |
-          curl -sSL ${felixonmars_apple} | perl -ne '/^server=\/([^\/]+)\// && print "host-suffix, $1, direct"' > apple.txt
+          curl -sSL ${felixonmars_apple} | perl -ne '/^server=\/([^\/]+)\// && print "host-suffix, $1, direct\n"' > apple.txt
 
       - name: Generate direct.txt file
         run: |
-          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, direct\n"' > direct.txt
-          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, direct\n"' >> direct.txt
-          curl -sSL ${ACL4SSR_ChinaDomain} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, direct"' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, direct\n", $2}' > direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, direct\n", $2}' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR," | awk -F ',' '{printf "ip-cidr, %s, direct\n", $2}' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR6," | awk -F ',' '{printf "ip6-cidr, %s, direct\n", $2}' >> direct.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^USER-AGENT," | awk -F ',' '{printf "user-agent, %s, direct\n", $2}' >> direct.txt
 
       - name: Generate proxy.txt file
         run: |
           curl -sSL ${lieber_proxy} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(full:)([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, proxy\n"' > proxy.txt
-          curl -sSL ${lieber_proxy} | grep -Ev "^(regexp|keyword|full):" | perl -ne '/^(domain:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy"' >> proxy.txt
+          curl -sSL ${lieber_proxy} | grep -Ev "^(regexp|keyword|full):" | perl -ne '/^(domain:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy\n"' >> proxy.txt
 
       - name: Generate reject.txt file
         run: |
           curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' > temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${acl2ssr_BanProgramAD} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanProgramAD} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanProgramAD} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${acl2ssr_BanEasyList} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${acl2ssr_BanEasyListChina} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${lieber_reject_anti} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${lieber_reject_anti} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${NobyDa_AdRule} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject\n"' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
 
-          curl -sSL ${NobyDa_AdRuleTest} | perl -ne '/^(DOMAIN-SUFFIX,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | perl -ne '/^(DOMAIN-KEYWORD,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-keyword, $2, reject\n"' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | perl -ne '/^(DOMAIN,)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host, $2, reject"' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "host-suffix, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "host-keyword, %s, reject\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN," | awk -F ',' '{printf "host, %s, direct\n", $2}' >> temp_reject.txt
           awk '!a[$0]++' temp_reject.txt > reject.txt
 
       - name: Generate private.txt file
         run: |
           curl -sSL ${custom_private} | awk -F ':' '/^full:/ {printf "host, %s, direct\n", $2}' > private.txt
-          curl -sSL ${custom_private} | awk -F ':' '/^domain:/ {printf "host-suffix, %s, direct", $2}' >> private.txt
+          curl -sSL ${custom_private} | awk -F ':' '/^domain:/ {printf "host-suffix, %s, direct\n", $2}' >> private.txt
 
       - name: Generate gfw.txt file
         run: |
-          curl -sSL ${lieber_gfw} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy"' > gfw.txt
+          curl -sSL ${lieber_gfw} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy\n"' > gfw.txt
 
       - name: Generate greatfire.txt file
         run: |
-          curl -sSL ${lieber_greatfire} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy"' > greatfire.txt
+          curl -sSL ${lieber_greatfire} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "host-suffix, $2, proxy\n"' > greatfire.txt
 
       - name: Generate tld-not-cn.txt file
         run: |
-          curl -sSL ${custom_tld_not_cn} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, proxy", $2}' > tld-not-cn.txt
+          curl -sSL ${custom_tld_not_cn} | grep -E "^domain:" | awk -F ':' '{printf "host-suffix, %s, proxy\n", $2}' > tld-not-cn.txt
 
       - name: Generate cncidr.txt file
         run: |
-          curl -sSL ${ipipnet_chinaiplist} | perl -ne '/^(\d{1,3}(\.\d{1,3}){3}\/\d{1,2})/ && print "ip-cidr, $1, direct"' > cncidr.txt
+          curl -sSL ${ipipnet_chinaiplist} | perl -ne '/^(\d{1,3}(\.\d{1,3}){3}\/\d{1,2})/ && print "ip-cidr, $1, direct\n"' > cncidr.txt
 
       - name: Generate telegramcidr.txt file
         run: |
           cp parts/telegram_ips.txt telegramcidr.txt
           curl -sSL ${telegram_cidr} | perl -ne '/^(\d{1,3}(\.\d{1,3}){3}\/\d{1,2})/ && print "ip-cidr, $1, proxy\n"' >> telegramcidr.txt
-          curl -sSL ${telegram_cidr} | grep ":" | perl -ne '/(.+\/\d+)/ && print "ip6-cidr, $1, proxy"' >> telegramcidr.txt
+          curl -sSL ${telegram_cidr} | grep ":" | perl -ne '/(.+\/\d+)/ && print "ip6-cidr, $1, proxy\n"' >> telegramcidr.txt
 
       - name: Move files to publish directory
         run: |
