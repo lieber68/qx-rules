@@ -23,6 +23,7 @@ jobs:
           echo "lieber_reject=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt" >> $GITHUB_ENV
           echo "lieber_proxy=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt" >> $GITHUB_ENV
           echo "lieber_direct=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt" >> $GITHUB_ENV
+          echo "all_direct=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/ChinaTest/ChinaTest.list" >> $GITHUB_ENV
           echo "ACL4SSR_ChinaDomain=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list" >> $GITHUB_ENV
           echo "lieber_gfw=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt" >> $GITHUB_ENV
           echo "lieber_greatfire=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/greatfire.txt" >> $GITHUB_ENV
@@ -67,6 +68,23 @@ jobs:
           curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR," | awk -F ',' '{printf "IP-CIDR, %s, DIRECT\n", $2}' >> direct.txt
           curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR6," | awk -F ',' '{printf "ip6-cidr, %s, DIRECT\n", $2}' >> direct.txt
 
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^USER-AGENT," | awk -F ',' '{printf "USER-AGENT, %s, DIRECT\n", $2}' > tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^USER-AGENT," | awk -F ',' '{printf "USER-AGENT, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${lieber_direct} | grep -Ev "^(regexp|keyword|full):" | perl -ne '/^(domain:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN-SUFFIX, $2, DIRECT\n"' >> tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${lieber_direct} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(full:)([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN, $2, DIRECT\n"' >> tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^IP-CIDR," | awk -F ',' '{printf "IP-CIDR, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR," | awk -F ',' '{printf "IP-CIDR, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${all_direct} | grep -E "^IP-CIDR6," | awk -F ',' '{printf "ip6-cidr, %s, DIRECT\n", $2}' >> tempDirect.txt
+          curl -sSL ${ACL4SSR_ChinaDomain} | grep -E "^IP-CIDR6," | awk -F ',' '{printf "ip6-cidr, %s, DIRECT\n", $2}' >> tempDirect.txt
+
+          awk '!a[$0]++' tempDirect.txt > allDirect.txt
+
       - name: Generate proxy.txt file
         run: |
           curl -sSL ${lieber_proxy} | grep -Ev "^(regexp|keyword|full):" | perl -ne '/^(domain:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN-SUFFIX, $2, proxy\n"' > proxy.txt
@@ -93,14 +111,14 @@ jobs:
           curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
           curl -sSL ${NobyDa_AD_Block} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
           
-          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AD_Block_Plus} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, DIRECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${NobyDa_AD_Block_Plus} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
 
           awk '!a[$0]++' temp_reject.txt > reject.txt
 
