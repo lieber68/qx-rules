@@ -92,33 +92,8 @@ jobs:
 
       - name: Generate reject.txt file
         run: |
-          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' > temp_reject.txt
-          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN-KEYWORD," | awk -F ',' '{printf "DOMAIN-KEYWORD, %s, REJECT\n", $2}' >> temp_reject.txt
-
           curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN-SUFFIX, $2, REJECT\n"' >> temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
           curl -sSL ${lieber_reject_anti} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AD_Block} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
-          
-          curl -sSL ${acl2ssr_BanProgramAD} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_banad} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyList} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyListChina} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${acl2ssr_BanEasyPrivacy} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRule} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AdRuleTest} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
-          curl -sSL ${NobyDa_AD_Block_Plus} | grep -E "^DOMAIN," | awk -F ',' '{printf "DOMAIN, %s, REJECT\n", $2}' >> temp_reject.txt
 
           awk '!a[$0]++' temp_reject.txt > reject.txt
 
