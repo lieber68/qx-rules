@@ -41,6 +41,7 @@ jobs:
           echo "NobyDa_AdRuleTest=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/AdRuleTest.list" >> $GITHUB_ENV
           echo "NobyDa_AD_Block=https://raw.githubusercontent.com/NobyDa/ND-AD/master/QuantumultX/AD_Block.txt" >> $GITHUB_ENV
           echo "NobyDa_AD_Block_Plus=https://raw.githubusercontent.com/NobyDa/ND-AD/master/QuantumultX/AD_Block_Plus.txt" >> $GITHUB_ENV
+          echo "Adblock4limbo=https://limbopro.xyz/Adblock4limbo.list" >> $GITHUB_ENV
         shell: bash
 
       - name: Checkout the default branch
@@ -92,8 +93,9 @@ jobs:
 
       - name: Generate reject.txt file
         run: |
-          curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN-SUFFIX, $2, REJECT\n"' >> temp_reject.txt
+          curl -sSL ${lieber_reject} | grep -Ev "^(regexp|keyword):" | perl -ne '/^(domain:|full:)?([-_a-zA-Z0-9]+(\.[-_a-zA-Z0-9]+)*)/ && print "DOMAIN-SUFFIX, $2, REJECT\n"' > temp_reject.txt
           curl -sSL ${lieber_reject_anti} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
+          curl -sSL ${Adblock4limbo} | grep -E "^DOMAIN-SUFFIX," | awk -F ',' '{printf "DOMAIN-SUFFIX, %s, REJECT\n", $2}' >> temp_reject.txt
 
           awk '!a[$0]++' temp_reject.txt > reject.txt
 
