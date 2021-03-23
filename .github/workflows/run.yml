@@ -152,7 +152,7 @@ jobs:
       - name: Move files to publish directory
         run: |
           mkdir -p publish
-          install -p {apple,icloud,google,proxy,direct,reject,private,gfw,greatfire,tld-not-cn,cncidr,telegramcidr}.txt ./publish/
+          install -p {apple,icloud,google,proxy,direct,reject,private,gfw,greatfire,tld-not-cn,cncidr,telegramcidr,allDirect}.txt ./publish/
 
       - name: Git push assets to "release" branch
         run: |
