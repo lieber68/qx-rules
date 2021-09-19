@@ -1,0 +1,13 @@
+DOMAIN-SUFFIX, lan, DIRECT
+DOMAIN-SUFFIX, localdomain, DIRECT
+DOMAIN-SUFFIX, example, DIRECT
+DOMAIN-SUFFIX, invalid, DIRECT
+DOMAIN-SUFFIX, localhost, DIRECT
+DOMAIN-SUFFIX, test, DIRECT
+DOMAIN-SUFFIX, local, DIRECT
+DOMAIN-SUFFIX, home.arpa, DIRECT
+DOMAIN-SUFFIX, msftconnecttest.com, DIRECT
+DOMAIN-SUFFIX, msftncsi.com, DIRECT
+DOMAIN-SUFFIX, localhost.sec.qq.com, DIRECT
+DOMAIN-SUFFIX, localhost.ptlogin2.qq.com, DIRECT
+DOMAIN, router.asus.com, DIRECT
